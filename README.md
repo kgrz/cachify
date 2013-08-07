@@ -1,3 +1,7 @@
+_Avoid installing the 0.0.1 version. API might change. Work still under progress_
+
+____
+
 # Cachify
 
 This is an extract from the Upton parser project. This serves as a drop-in 
