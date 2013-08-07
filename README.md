@@ -40,17 +40,18 @@ you want caching and false-ish if you don't want it.
 * Cache location: This is the cache location. By default, this is set to 
 `Dir.tmpdir/cachify`.
 
-    # Checks if a cache is present. If not, the cache is created, 
-    # the file is downloaded and is saved in the cache and is read.
-    Cachify::Downloader.new("http://www.example.com").get
+```ruby
+# Checks if a cache is present. If not, the cache is created, 
+# the file is downloaded and is saved in the cache and is read.
+Cachify::Downloader.new("http://www.example.com").get
 
-    # Ignores the cache and downloads the url for every call to #get
-    Cachify::Downloader.new("http://www.example.com", :cache => false).get
+# Ignores the cache and downloads the url for every call to #get
+Cachify::Downloader.new("http://www.example.com", :cache => false).get
 
-    # Ignores the cache and downloads the url for every call and saves 
-    # the cache to the "cache" folder in the same directory
-    Cachify::Downloader.new("http://www.example.com", :cache => false, :cache_location => "./cache").get
-
+# Ignores the cache and downloads the url for every call and saves 
+# the cache to the "cache" folder in the same directory
+Cachify::Downloader.new("http://www.example.com", :cache => false, :cache_location => "./cache").get
+```
 
 ## Todo
 
