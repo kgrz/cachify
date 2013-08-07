@@ -1,16 +1,17 @@
 require "cachify/version"
 require "fileutils"
 require "open-uri"
+require "tmpdir"
 
 module Cachify
 
   class Downloader
 
     attr_reader :uri, :cache_location
-    def initialize(uri, cache = true, cache_location = "/tmp/cachify")
+    def initialize(uri, options = {})
       @uri = uri
-      @cache = cache
-      @cache_location = cache_location
+      @cache = options.fetch(:cache) { true }
+      @cache_location = options[:cache_location] || "#{Dir.tmpdir}/cachify"
       initialize_cache!
     end
 
@@ -32,32 +33,32 @@ module Cachify
              else
                download_from_resource
              end
-      File.open(cached_file, "w") { |f| f.write(file) }
+      File.write(cached_file, file) unless cached_file_exists?
       file
-    end
-
-    def initialize_cache!
-      unless Dir.exists?(cache_location)
-        Dir.mkdir(cache_location)
-      end
     end
 
     def cache_enabled?
       !!@cache
     end
 
-    def cached_filename_based_on_uri
+    def hashed_filename_based_on_uri
       Digest::MD5.hexdigest(uri)
     end
 
     def cached_file
-      "#{cache_location}/#{cached_filename_based_on_uri}.html"
+      "#{cache_location}/#{hashed_filename_based_on_uri}"
     end
 
     def cached_file_exists?
       File.exists?(cached_file)
     end
 
+    def initialize_cache!
+      unless Dir.exists?(cache_location)
+        Dir.mkdir(cache_location)
+        FileUtils.chmod 0700, cache_location
+      end
+    end
+
   end
 end
-
